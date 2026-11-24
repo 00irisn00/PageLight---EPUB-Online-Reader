@@ -6,7 +6,7 @@
 <title>PageLight - EPUB Online Reader</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Noto+Serif+TC:wght@400;700&family=Noto+Sans:wght@400;600&family=Noto+Sans+TC:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Noto+Serif+TC:wght@400;700&family=Noto+Sans:wght@400;600&family=Noto+Sans+TC:wght@400;600&family=Literata:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
 :root{
   --bg:#f3f5f4;--panel:#fff;--ink:#1b2420;--muted:#5d6b66;--line:#d5dcd8;--accent:#1d6a63;--accent-ink:#fff;
@@ -181,7 +181,7 @@ button[aria-pressed="true"]{font-weight:600}
   <div id="settings" class="hide">
     <label><span data-i="size">Text size</span><input type="range" id="fsR" min="14" max="30" step="1"></label>
     <label><span data-i="spacing">Line spacing</span><input type="range" id="lhR" min="1.4" max="2.4" step="0.1"></label>
-    <label><span data-i="font">Typeface</span><select id="ffS"><option value="serif" data-i="serif">Serif</option><option value="sans" data-i="sans">Sans</option></select></label>
+    <label><span data-i="font">Typeface</span><select id="ffS"><option value="serif" data-i="serif">Serif</option><option value="sans" data-i="sans">Sans</option><option value="bookerly">Bookerly *</option><option value="calibre">Calibre / Calibri *</option><option value="literata">Literata</option><option value="merriweather">Merriweather</option><option value="lora">Lora</option></select><small data-i="fontnote" style="display:block;margin-top:.3rem;font-size:.78rem"></small></label>
     <div class="fld"><span data-i="theme">Theme</span><div class="sw" id="thS" role="group"><button data-th="mist" data-i="mist">Mist</button><button data-th="white" data-i="white">White</button><button data-th="parchment" data-i="parchment">Parchment</button><button data-th="night" data-i="night">Night</button></div></div>
   </div>
 </main>
@@ -196,9 +196,9 @@ const SITE = {
 };
 
 const I18N = {
-  en: {app:"EPUB Reader",open:"Open EPUB",drop:"Drop an EPUB file here, or choose one",private:"Files are processed in your browser and never uploaded.",contents:"Contents",prev:"Previous",next:"Next",size:"Text size",spacing:"Line spacing",font:"Typeface",serif:"Serif",sans:"Sans",theme:"Theme",mist:"Mist",white:"White",parchment:"Parchment",night:"Night",err:"This file couldn’t be read. Check that it’s a valid, DRM-free EPUB.",drm:"This EPUB appears to be DRM-protected and can’t be opened.",untitled:"Untitled",loading:"Opening…",lib:"Library",all:"All",reading:"Reading",finished:"Finished",unread:"Unread",st_today:"Today",st_total:"Total time",st_streak:"Day streak",st_done:"Finished",min:"min",hr:"h",remove:"Remove",none:"No books here yet.",done:"Mark as finished",backup:"Back up library",restore:"Restore from backup",month:"Month",year:"Year",pages:"pages",cont:"Continue reading",start:"Start reading",series:"Series",genre:"Genre / type",bms:"Bookmarks",addbm:"Bookmark",notes:"Notes",nobm:"No bookmarks yet.",pread:"Pages read",pgnote:"Page counts are estimates based on an A5 page (about 400 Chinese characters, or 800 Latin characters, per page).",status:"Status"},
-  "zh-TW": {app:"EPUB 閱讀器",open:"開啟 EPUB",drop:"將 EPUB 檔案拖曳到這裡，或點此選擇檔案",private:"檔案只在你的瀏覽器中處理，不會上傳。",contents:"目錄",prev:"上一章",next:"下一章",size:"字級",spacing:"行距",font:"字體",serif:"襯線體",sans:"無襯線體",theme:"主題",mist:"青霧",white:"純白",parchment:"羊皮紙",night:"夜間",err:"無法讀取此檔案，請確認它是有效且沒有 DRM 的 EPUB。",drm:"此 EPUB 似乎有 DRM 保護，無法開啟。",untitled:"未命名",loading:"開啟中…",lib:"書櫃",all:"全部",reading:"在讀",finished:"已完成",unread:"未讀",st_today:"今日閱讀",st_total:"累計時間",st_streak:"連續天數",st_done:"已讀完",min:"分鐘",hr:"小時",remove:"移除",none:"這裡還沒有書。",done:"標記為已完成",backup:"備份書櫃",restore:"從備份還原",month:"月",year:"年",pages:"頁",cont:"繼續閱讀",start:"開始閱讀",series:"系列",genre:"類型",bms:"書籤",addbm:"加書籤",notes:"備註 / 留言",nobm:"還沒有書籤。",pread:"已讀頁數",pgnote:"頁數是依 A5 紙張估算（約每頁 400 個中文字，或 800 個英文／越南文字元）。",status:"狀態"},
-  vi: {app:"Trình đọc EPUB",open:"Mở tệp EPUB",drop:"Kéo thả tệp EPUB vào đây hoặc chọn tệp",private:"Tệp được xử lý ngay trên trình duyệt và không được tải lên máy chủ.",contents:"Mục lục",prev:"Trước",next:"Sau",size:"Cỡ chữ",spacing:"Giãn dòng",font:"Phông chữ",serif:"Có chân",sans:"Không chân",theme:"Giao diện",mist:"Xanh sương",white:"Trắng",parchment:"Giấy da",night:"Đêm",err:"Không đọc được tệp này. Hãy kiểm tra xem đây có phải là EPUB hợp lệ, không có DRM.",drm:"EPUB này có vẻ được bảo vệ bằng DRM nên không thể mở.",untitled:"Không có tiêu đề",loading:"Đang mở…",lib:"Tủ sách",all:"Tất cả",reading:"Đang đọc",finished:"Đã đọc xong",unread:"Chưa đọc",st_today:"Hôm nay",st_total:"Tổng thời gian",st_streak:"Chuỗi ngày",st_done:"Đã hoàn thành",min:"phút",hr:"giờ",remove:"Xóa",none:"Chưa có sách nào ở đây.",done:"Đánh dấu đã đọc xong",backup:"Sao lưu tủ sách",restore:"Khôi phục từ bản sao lưu",month:"Tháng",year:"Năm",pages:"trang",cont:"Đọc tiếp",start:"Bắt đầu đọc",series:"Bộ sách",genre:"Thể loại",bms:"Dấu trang",addbm:"Đánh dấu trang",notes:"Ghi chú",nobm:"Chưa có dấu trang.",pread:"Số trang đã đọc",pgnote:"Số trang là ước tính theo khổ A5 (khoảng 400 chữ Hán hoặc 800 ký tự Latin mỗi trang).",status:"Trạng thái"}
+  en: {app:"EPUB Reader",open:"Open EPUB",drop:"Drop an EPUB file here, or choose one",private:"Files are processed in your browser and never uploaded.",contents:"Contents",prev:"Previous",next:"Next",size:"Text size",spacing:"Line spacing",font:"Typeface",serif:"Serif",sans:"Sans",theme:"Theme",mist:"Mist",white:"White",parchment:"Parchment",night:"Night",err:"This file couldn’t be read. Check that it’s a valid, DRM-free EPUB.",drm:"This EPUB appears to be DRM-protected and can’t be opened.",untitled:"Untitled",loading:"Opening…",lib:"Library",all:"All",reading:"Reading",finished:"Finished",unread:"Unread",st_today:"Today",st_total:"Total time",st_streak:"Day streak",st_done:"Finished",min:"min",hr:"h",remove:"Remove",none:"No books here yet.",done:"Mark as finished",backup:"Back up library",restore:"Restore from backup",month:"Month",year:"Year",pages:"pages",cont:"Continue reading",start:"Start reading",series:"Series",genre:"Genre / type",bms:"Bookmarks",addbm:"Bookmark",notes:"Notes",nobm:"No bookmarks yet.",pread:"Pages read",pgnote:"Page counts are estimates based on an A5 page (about 400 Chinese characters, or 800 Latin characters, per page).",fontnote:"* Uses the font if it is installed on your device; otherwise a similar free font is used.",status:"Status"},
+  "zh-TW": {app:"EPUB 閱讀器",open:"開啟 EPUB",drop:"將 EPUB 檔案拖曳到這裡，或點此選擇檔案",private:"檔案只在你的瀏覽器中處理，不會上傳。",contents:"目錄",prev:"上一章",next:"下一章",size:"字級",spacing:"行距",font:"字體",serif:"襯線體",sans:"無襯線體",theme:"主題",mist:"青霧",white:"純白",parchment:"羊皮紙",night:"夜間",err:"無法讀取此檔案，請確認它是有效且沒有 DRM 的 EPUB。",drm:"此 EPUB 似乎有 DRM 保護，無法開啟。",untitled:"未命名",loading:"開啟中…",lib:"書櫃",all:"全部",reading:"在讀",finished:"已完成",unread:"未讀",st_today:"今日閱讀",st_total:"累計時間",st_streak:"連續天數",st_done:"已讀完",min:"分鐘",hr:"小時",remove:"移除",none:"這裡還沒有書。",done:"標記為已完成",backup:"備份書櫃",restore:"從備份還原",month:"月",year:"年",pages:"頁",cont:"繼續閱讀",start:"開始閱讀",series:"系列",genre:"類型",bms:"書籤",addbm:"加書籤",notes:"備註 / 留言",nobm:"還沒有書籤。",pread:"已讀頁數",pgnote:"頁數是依 A5 紙張估算（約每頁 400 個中文字，或 800 個英文／越南文字元）。",fontnote:"* 若你的裝置已安裝該字體就會使用，否則改用相近的免費字體。",status:"狀態"},
+  vi: {app:"Trình đọc EPUB",open:"Mở tệp EPUB",drop:"Kéo thả tệp EPUB vào đây hoặc chọn tệp",private:"Tệp được xử lý ngay trên trình duyệt và không được tải lên máy chủ.",contents:"Mục lục",prev:"Trước",next:"Sau",size:"Cỡ chữ",spacing:"Giãn dòng",font:"Phông chữ",serif:"Có chân",sans:"Không chân",theme:"Giao diện",mist:"Xanh sương",white:"Trắng",parchment:"Giấy da",night:"Đêm",err:"Không đọc được tệp này. Hãy kiểm tra xem đây có phải là EPUB hợp lệ, không có DRM.",drm:"EPUB này có vẻ được bảo vệ bằng DRM nên không thể mở.",untitled:"Không có tiêu đề",loading:"Đang mở…",lib:"Tủ sách",all:"Tất cả",reading:"Đang đọc",finished:"Đã đọc xong",unread:"Chưa đọc",st_today:"Hôm nay",st_total:"Tổng thời gian",st_streak:"Chuỗi ngày",st_done:"Đã hoàn thành",min:"phút",hr:"giờ",remove:"Xóa",none:"Chưa có sách nào ở đây.",done:"Đánh dấu đã đọc xong",backup:"Sao lưu tủ sách",restore:"Khôi phục từ bản sao lưu",month:"Tháng",year:"Năm",pages:"trang",cont:"Đọc tiếp",start:"Bắt đầu đọc",series:"Bộ sách",genre:"Thể loại",bms:"Dấu trang",addbm:"Đánh dấu trang",notes:"Ghi chú",nobm:"Chưa có dấu trang.",pread:"Số trang đã đọc",pgnote:"Số trang là ước tính theo khổ A5 (khoảng 400 chữ Hán hoặc 800 ký tự Latin mỗi trang).",fontnote:"* Dùng phông chữ này nếu đã cài trên thiết bị, nếu không sẽ dùng phông tương tự miễn phí.",status:"Trạng thái"}
 };
 /* ===== A5 頁數設定 / A5 page size: characters per page (edit here) ===== */
 const PAGE_CJK = 400, PAGE_LATIN = 800;
@@ -238,6 +238,14 @@ function applyLang(){
 }
 
 /* ---------- settings ---------- */
+const FONTS = {
+  serif: "var(--serif)", sans: "var(--sans)",
+  bookerly: '"Bookerly","Literata","Noto Serif TC","Times New Roman",serif',
+  calibre: '"Calibre","Calibri","Source Sans 3","Noto Sans TC","Microsoft JhengHei",sans-serif',
+  literata: '"Literata","Noto Serif TC",serif',
+  merriweather: '"Merriweather","Noto Serif TC",serif',
+  lora: '"Lora","Noto Serif TC",serif'
+};
 const THEMES = ["mist","white","parchment","night"];
 function themeNow(){
   let th = store.get("th");
@@ -248,7 +256,7 @@ function themeNow(){
 function applySettings(){
   const fs = store.get("fs") || "19", lh = store.get("lh") || "1.9", ff = store.get("ff") || "serif", th = themeNow();
   root.style.setProperty("--fs", fs + "px"); root.style.setProperty("--lh", lh);
-  root.style.setProperty("--ff", ff === "sans" ? "var(--sans)" : "var(--serif)");
+  root.style.setProperty("--ff", FONTS[ff] || FONTS.serif);
   root.dataset.theme = th; document.querySelectorAll("#thS button").forEach(b => b.setAttribute("aria-pressed", b.dataset.th === th));
   $("#fsR").value = fs; $("#lhR").value = lh; $("#ffS").value = ff;
 }
