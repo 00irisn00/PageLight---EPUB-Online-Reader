@@ -40,7 +40,7 @@ main{flex:1;min-height:0;display:flex;position:relative}
 #toc h2{margin:0 1rem .5rem;font-size:.9rem;color:var(--muted);font-weight:600}
 #toc a{display:block;padding:.35rem 1rem;color:var(--ink);text-decoration:none;font-size:.92rem;line-height:1.4;border-inline-start:3px solid transparent}
 #toc a:hover{background:var(--bg)}
-#toc a.on{border-inline-start-color:var(--accent);background:var(--bg);font-weight:600}
+#toc a.on{border-inline-start-color:var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:600}
 #reader{flex:1;overflow:auto;scroll-behavior:auto}
 .book{font-family:var(--ff);font-size:var(--fs);line-height:var(--lh);max-width:36em;margin:0 auto;padding:2.5rem 1.25rem 3rem;overflow-wrap:break-word;font-kerning:normal;text-rendering:optimizeLegibility}
 .book p{margin:0 0 1em}
@@ -64,6 +64,8 @@ main{flex:1;min-height:0;display:flex;position:relative}
 #settings input[type=range]{width:100%;accent-color:var(--accent)}
 #settings select{width:100%;margin-top:.25rem}
 #settings .fld{margin-bottom:.9rem;font-size:.9rem;color:var(--muted)}
+.gr{display:flex;gap:.4rem;margin-top:.3rem}
+#settings .gr input{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:.3rem .45rem}
 .sw{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.35rem}
 .sw button{display:flex;align-items:center;gap:.45rem;padding:.35rem .5rem;font-size:.85rem;color:var(--ink)}
 .sw button::before{content:"";width:1rem;height:1rem;border-radius:50%;border:1px solid var(--line);background:var(--c);flex:none}
@@ -77,8 +79,29 @@ main{flex:1;min-height:0;display:flex;position:relative}
 #brand svg{width:56px;height:56px}
 #brand h1{margin:.4rem 0 0;font-size:1.5rem;color:var(--ink)}
 button:active:not(:disabled){transform:translateY(1px)}
-button[aria-pressed="true"],.card.on{background:color-mix(in srgb,var(--accent) 16%,var(--panel));border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+button[aria-pressed="true"],.card.on,button.hit,.card.hit,#toc a.hit{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.card.on h3,.card.on small,.card.hit h3,.card.hit small{color:var(--accent-ink)}
+.card.on select,.card.on button,.card.hit select,.card.hit button{color:var(--ink)}
+button:active:not(:disabled),.card:active{background:var(--accent);color:var(--accent-ink)}
 button[aria-pressed="true"]{font-weight:600}
+.pager{justify-content:center}
+.pager button{white-space:nowrap}
+.br{flex-basis:100%;height:0;margin-top:-.5rem}
+.lpager{display:flex;flex-direction:column;align-items:center;gap:.6rem;margin-bottom:1rem}
+#lJump{display:flex;align-items:center;gap:.6rem;font-size:.9rem}
+#lPos{cursor:pointer;border-bottom:1px dotted var(--muted);min-width:4.5rem;text-align:center}
+#lPrev::before{content:"« "}
+#lNext::after{content:" »"}
+.pgbox{display:flex;align-items:center;gap:.6rem;padding:.45rem .7rem;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.pgbox button:not(.hit):not(:active){background:var(--bg)}
+#pos{cursor:pointer;border-bottom:1px dotted var(--muted);min-width:4.5rem;text-align:center}
+#jump{flex-basis:100%;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:.5rem .9rem;font-size:.9rem}
+#jump label,#lJump label{display:flex;align-items:center;gap:.4rem;color:var(--muted)}
+#jump input,#lJump input{width:5.5rem;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:.3rem .45rem}
+#prev::before{content:"« "}
+#next::after{content:" »"}
+#doneBtn::before{content:"☑︎ "}
+#bmBtn::before{content:"📥 "}
 .pager{flex-wrap:wrap}
 #lib{max-width:60rem;margin:0 auto;padding:0 1.25rem 3rem}
 #stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.6rem;margin-bottom:1.25rem}
@@ -170,18 +193,20 @@ button[aria-pressed="true"]{font-weight:600}
       <div id="stats"></div>
       <div id="heat"></div>
       <div class="tabs" id="tabs" role="group"></div>
+      <div class="lpager"><div class="pgbox"><button id="lPrev" data-i="pprev">Previous</button><span id="lPos" role="button" tabindex="0" title="Go to"></span><button id="lNext" data-i="pnext">Next</button></div><div id="lJump" class="hide"><label><span data-i="pglbl">Page</span><input id="lPg" type="number" min="1" inputmode="numeric"></label><button id="lGo" data-i="go">Go</button></div></div>
       <div id="grid"></div>
     </section>
     <section id="detail" class="hide"></section>
     <article id="content" class="book hide"></article>
     <div class="pager hide" id="pager">
-      <button id="prev" data-i="prev">Previous</button><span id="pos"></span><button id="doneBtn" data-i="done">Mark as finished</button><button id="bmBtn" data-i="addbm">Bookmark</button><button id="next" data-i="next">Next</button>
+      <div class="pgbox"><button id="prev" data-i="prev">Previous</button><span id="pos" role="button" tabindex="0" title="Go to"></span><button id="next" data-i="next">Next</button></div><div id="jump" class="hide"><label><span data-i="pglbl">Page</span><input id="jPg" type="number" min="1" inputmode="numeric"></label><button id="jPgGo" data-i="go">Go</button><label><span data-i="pctlbl">Percent</span><input id="jPc" type="number" min="0" max="100" inputmode="numeric">%</label><button id="jPcGo" data-i="go">Go</button></div><span class="br"></span><button id="doneBtn" data-i="done">Mark as finished</button><button id="bmBtn" data-i="addbm">Bookmark</button>
     </div>
   </div>
   <div id="settings" class="hide">
     <label><span data-i="size">Text size</span><input type="range" id="fsR" min="14" max="30" step="1"></label>
     <label><span data-i="spacing">Line spacing</span><input type="range" id="lhR" min="1.4" max="2.4" step="0.1"></label>
     <label><span data-i="font">Typeface</span><select id="ffS"><option value="serif" data-i="serif">Serif</option><option value="sans" data-i="sans">Sans</option><option value="bookerly">Bookerly *</option><option value="calibre">Calibre / Calibri *</option><option value="literata">Literata</option><option value="merriweather">Merriweather</option><option value="lora">Lora</option></select><small data-i="fontnote" style="display:block;margin-top:.3rem;font-size:.78rem"></small></label>
+    <div class="fld"><span data-i="gopct">Go to %</span><div class="gr"><input id="sPc" type="number" min="0" max="100" inputmode="numeric" placeholder="0–100"><button id="sGo" data-i="go">Go</button></div></div>
     <div class="fld"><span data-i="theme">Theme</span><div class="sw" id="thS" role="group"><button data-th="mist" data-i="mist">Mist</button><button data-th="white" data-i="white">White</button><button data-th="parchment" data-i="parchment">Parchment</button><button data-th="night" data-i="night">Night</button></div></div>
   </div>
 </main>
@@ -196,9 +221,9 @@ const SITE = {
 };
 
 const I18N = {
-  en: {app:"EPUB Reader",open:"Open EPUB",drop:"Drop an EPUB file here, or choose one",private:"Files are processed in your browser and never uploaded.",contents:"Contents",prev:"Previous",next:"Next",size:"Text size",spacing:"Line spacing",font:"Typeface",serif:"Serif",sans:"Sans",theme:"Theme",mist:"Mist",white:"White",parchment:"Parchment",night:"Night",err:"This file couldn’t be read. Check that it’s a valid, DRM-free EPUB.",drm:"This EPUB appears to be DRM-protected and can’t be opened.",untitled:"Untitled",loading:"Opening…",lib:"Library",all:"All",reading:"Reading",finished:"Finished",unread:"Unread",st_today:"Today",st_total:"Total time",st_streak:"Day streak",st_done:"Finished",min:"min",hr:"h",remove:"Remove",none:"No books here yet.",done:"Mark as finished",backup:"Back up library",restore:"Restore from backup",month:"Month",year:"Year",pages:"pages",cont:"Continue reading",start:"Start reading",series:"Series",genre:"Genre / type",bms:"Bookmarks",addbm:"Bookmark",notes:"Notes",nobm:"No bookmarks yet.",pread:"Pages read",pgnote:"Page counts are estimates based on an A5 page (about 400 Chinese characters, or 800 Latin characters, per page).",fontnote:"* Uses the font if it is installed on your device; otherwise a similar free font is used.",status:"Status"},
-  "zh-TW": {app:"EPUB 閱讀器",open:"開啟 EPUB",drop:"將 EPUB 檔案拖曳到這裡，或點此選擇檔案",private:"檔案只在你的瀏覽器中處理，不會上傳。",contents:"目錄",prev:"上一章",next:"下一章",size:"字級",spacing:"行距",font:"字體",serif:"襯線體",sans:"無襯線體",theme:"主題",mist:"青霧",white:"純白",parchment:"羊皮紙",night:"夜間",err:"無法讀取此檔案，請確認它是有效且沒有 DRM 的 EPUB。",drm:"此 EPUB 似乎有 DRM 保護，無法開啟。",untitled:"未命名",loading:"開啟中…",lib:"書櫃",all:"全部",reading:"在讀",finished:"已完成",unread:"未讀",st_today:"今日閱讀",st_total:"累計時間",st_streak:"連續天數",st_done:"已讀完",min:"分鐘",hr:"小時",remove:"移除",none:"這裡還沒有書。",done:"標記為已完成",backup:"備份書櫃",restore:"從備份還原",month:"月",year:"年",pages:"頁",cont:"繼續閱讀",start:"開始閱讀",series:"系列",genre:"類型",bms:"書籤",addbm:"加書籤",notes:"備註 / 留言",nobm:"還沒有書籤。",pread:"已讀頁數",pgnote:"頁數是依 A5 紙張估算（約每頁 400 個中文字，或 800 個英文／越南文字元）。",fontnote:"* 若你的裝置已安裝該字體就會使用，否則改用相近的免費字體。",status:"狀態"},
-  vi: {app:"Trình đọc EPUB",open:"Mở tệp EPUB",drop:"Kéo thả tệp EPUB vào đây hoặc chọn tệp",private:"Tệp được xử lý ngay trên trình duyệt và không được tải lên máy chủ.",contents:"Mục lục",prev:"Trước",next:"Sau",size:"Cỡ chữ",spacing:"Giãn dòng",font:"Phông chữ",serif:"Có chân",sans:"Không chân",theme:"Giao diện",mist:"Xanh sương",white:"Trắng",parchment:"Giấy da",night:"Đêm",err:"Không đọc được tệp này. Hãy kiểm tra xem đây có phải là EPUB hợp lệ, không có DRM.",drm:"EPUB này có vẻ được bảo vệ bằng DRM nên không thể mở.",untitled:"Không có tiêu đề",loading:"Đang mở…",lib:"Tủ sách",all:"Tất cả",reading:"Đang đọc",finished:"Đã đọc xong",unread:"Chưa đọc",st_today:"Hôm nay",st_total:"Tổng thời gian",st_streak:"Chuỗi ngày",st_done:"Đã hoàn thành",min:"phút",hr:"giờ",remove:"Xóa",none:"Chưa có sách nào ở đây.",done:"Đánh dấu đã đọc xong",backup:"Sao lưu tủ sách",restore:"Khôi phục từ bản sao lưu",month:"Tháng",year:"Năm",pages:"trang",cont:"Đọc tiếp",start:"Bắt đầu đọc",series:"Bộ sách",genre:"Thể loại",bms:"Dấu trang",addbm:"Đánh dấu trang",notes:"Ghi chú",nobm:"Chưa có dấu trang.",pread:"Số trang đã đọc",pgnote:"Số trang là ước tính theo khổ A5 (khoảng 400 chữ Hán hoặc 800 ký tự Latin mỗi trang).",fontnote:"* Dùng phông chữ này nếu đã cài trên thiết bị, nếu không sẽ dùng phông tương tự miễn phí.",status:"Trạng thái"}
+  en: {app:"EPUB Reader",open:"Open EPUB",drop:"Drop an EPUB file here, or choose one",private:"Files are processed in your browser and never uploaded.",contents:"Contents",prev:"Previous",next:"Next",size:"Text size",spacing:"Line spacing",font:"Typeface",serif:"Serif",sans:"Sans",theme:"Theme",mist:"Mist",white:"White",parchment:"Parchment",night:"Night",err:"This file couldn’t be read. Check that it’s a valid, DRM-free EPUB.",drm:"This EPUB appears to be DRM-protected and can’t be opened.",untitled:"Untitled",loading:"Opening…",lib:"Library",all:"All",reading:"Reading",finished:"Finished",unread:"Unread",st_today:"Today",st_total:"Total time",st_streak:"Day streak",st_done:"Finished",min:"min",hr:"h",remove:"Remove",none:"No books here yet.",done:"Mark as finished",backup:"Back up library",restore:"Restore from backup",month:"Month",year:"Year",pages:"pages",cont:"Continue reading",start:"Start reading",series:"Series",genre:"Genre / type",bms:"Bookmarks",addbm:"Bookmark",notes:"Notes",nobm:"No bookmarks yet.",pread:"Pages read",pgnote:"Page counts are estimates based on an A5 page (about 400 Chinese characters, or 800 Latin characters, per page).",fontnote:"* Uses the font if it is installed on your device; otherwise a similar free font is used.",status:"Status",jump:"Go to",pglbl:"Page",pctlbl:"Percent",go:"Go",pprev:"Previous",pnext:"Next",gopct:"Go to %"},
+  "zh-TW": {app:"EPUB 閱讀器",open:"開啟 EPUB",drop:"將 EPUB 檔案拖曳到這裡，或點此選擇檔案",private:"檔案只在你的瀏覽器中處理，不會上傳。",contents:"目錄",prev:"上一章",next:"下一章",size:"字級",spacing:"行距",font:"字體",serif:"襯線體",sans:"無襯線體",theme:"主題",mist:"青霧",white:"純白",parchment:"羊皮紙",night:"夜間",err:"無法讀取此檔案，請確認它是有效且沒有 DRM 的 EPUB。",drm:"此 EPUB 似乎有 DRM 保護，無法開啟。",untitled:"未命名",loading:"開啟中…",lib:"書櫃",all:"全部",reading:"在讀",finished:"已完成",unread:"未讀",st_today:"今日閱讀",st_total:"累計時間",st_streak:"連續天數",st_done:"已讀完",min:"分鐘",hr:"小時",remove:"移除",none:"這裡還沒有書。",done:"標記為已完成",backup:"備份書櫃",restore:"從備份還原",month:"月",year:"年",pages:"頁",cont:"繼續閱讀",start:"開始閱讀",series:"系列",genre:"類型",bms:"書籤",addbm:"加書籤",notes:"備註 / 留言",nobm:"還沒有書籤。",pread:"已讀頁數",pgnote:"頁數是依 A5 紙張估算（約每頁 400 個中文字，或 800 個英文／越南文字元）。",fontnote:"* 若你的裝置已安裝該字體就會使用，否則改用相近的免費字體。",status:"狀態",jump:"跳至",pglbl:"頁",pctlbl:"百分比",go:"前往",pprev:"上一頁",pnext:"下一頁",gopct:"跳到百分比 %"},
+  vi: {app:"Trình đọc EPUB",open:"Mở tệp EPUB",drop:"Kéo thả tệp EPUB vào đây hoặc chọn tệp",private:"Tệp được xử lý ngay trên trình duyệt và không được tải lên máy chủ.",contents:"Mục lục",prev:"Trước",next:"Sau",size:"Cỡ chữ",spacing:"Giãn dòng",font:"Phông chữ",serif:"Có chân",sans:"Không chân",theme:"Giao diện",mist:"Xanh sương",white:"Trắng",parchment:"Giấy da",night:"Đêm",err:"Không đọc được tệp này. Hãy kiểm tra xem đây có phải là EPUB hợp lệ, không có DRM.",drm:"EPUB này có vẻ được bảo vệ bằng DRM nên không thể mở.",untitled:"Không có tiêu đề",loading:"Đang mở…",lib:"Tủ sách",all:"Tất cả",reading:"Đang đọc",finished:"Đã đọc xong",unread:"Chưa đọc",st_today:"Hôm nay",st_total:"Tổng thời gian",st_streak:"Chuỗi ngày",st_done:"Đã hoàn thành",min:"phút",hr:"giờ",remove:"Xóa",none:"Chưa có sách nào ở đây.",done:"Đánh dấu đã đọc xong",backup:"Sao lưu tủ sách",restore:"Khôi phục từ bản sao lưu",month:"Tháng",year:"Năm",pages:"trang",cont:"Đọc tiếp",start:"Bắt đầu đọc",series:"Bộ sách",genre:"Thể loại",bms:"Dấu trang",addbm:"Đánh dấu trang",notes:"Ghi chú",nobm:"Chưa có dấu trang.",pread:"Số trang đã đọc",pgnote:"Số trang là ước tính theo khổ A5 (khoảng 400 chữ Hán hoặc 800 ký tự Latin mỗi trang).",fontnote:"* Dùng phông chữ này nếu đã cài trên thiết bị, nếu không sẽ dùng phông tương tự miễn phí.",status:"Trạng thái",jump:"Đi tới",pglbl:"Trang",pctlbl:"Phần trăm",go:"Đi",pprev:"Trước",pnext:"Sau",gopct:"Đi tới %"}
 };
 /* ===== A5 頁數設定 / A5 page size: characters per page (edit here) ===== */
 const PAGE_CJK = 400, PAGE_LATIN = 800;
@@ -261,7 +286,7 @@ function applySettings(){
   $("#fsR").value = fs; $("#lhR").value = lh; $("#ffS").value = ff;
 }
 [["fsR","fs"],["lhR","lh"],["ffS","ff"]].forEach(([id,k]) => $("#"+id).addEventListener("input", e => { store.set(k, e.target.value); applySettings(); }));
-$("#setBtn").onclick = () => $("#settings").classList.toggle("hide");
+$("#setBtn").onclick = () => { $("#settings").classList.toggle("hide"); $("#sPc").disabled = $("#sGo").disabled = !book; };
 document.querySelectorAll("#thS button").forEach(b => b.onclick = () => { store.set("th", b.dataset.th); applySettings(); });
 $("#langSel").onchange = e => { lang = e.target.value; store.set("lang", lang); applyLang(); if (inDetail) showDetail(bid); };
 $("#tocBtn").onclick = () => $("#toc").classList.toggle("hide");
@@ -404,7 +429,7 @@ async function show(i, frag, pos){
 
 function updateNav(){
   $("#prev").disabled = cur <= 0; $("#next").disabled = cur >= book.spine.length - 1;
-  $("#pos").textContent = (cur + 1) + " / " + book.spine.length;
+  { const rr = rec(), tp = rr ? totalPg(rr) : 0; $("#pos").textContent = tp ? Math.min(tp, pageAt(rr, cur, rr.pos || 0)) + " / " + tp : (cur + 1) + " / " + book.spine.length; }
   { const rr = rec(); $("#doneBtn").setAttribute("aria-pressed", !!rr && rr.status === "finished"); }
   let on = -1; book.toc.forEach((e, i) => { if (book.idx[e.path] <= cur) on = i; });
   document.querySelectorAll("#tocList a").forEach(a => a.classList.toggle("on", +a.dataset.t === on));
@@ -444,9 +469,10 @@ function renderLib(){
   const tot = lib.reduce((a, b) => a + (b.secs || 0), 0), today = days[dayKey(new Date())] || 0;
   $("#stats").innerHTML = [[fmt(today), "st_today"], [fmt(tot), "st_total"], [streak(), "st_streak"], [cnt("finished"), "st_done"]].map(([v, k]) => "<div><b>" + v + "</b><span>" + t(k) + "</span></div>").join("");
   $("#tabs").innerHTML = "";
-  ["all", "reading", "finished", "unread"].forEach(k => { const b = document.createElement("button"); b.textContent = t(k) + " " + cnt(k); b.setAttribute("aria-pressed", k === filter); b.onclick = () => { filter = k; renderLib(); }; $("#tabs").append(b); });
+  ["all", "reading", "finished", "unread"].forEach(k => { const b = document.createElement("button"); b.textContent = t(k) + " " + cnt(k); b.setAttribute("aria-pressed", k === filter); b.onclick = () => { filter = k; lp = 1; renderLib(); }; $("#tabs").append(b); });
   const g = $("#grid"); g.innerHTML = "";
-  const list = lib.filter(b => filter === "all" || b.status === filter);
+  const flt = lib.filter(b => filter === "all" || b.status === filter), pages = Math.max(1, Math.ceil(flt.length / LPAGE)); lp = Math.min(Math.max(1, lp), pages);
+  const list = flt.slice((lp - 1) * LPAGE, lp * LPAGE); $("#lPos").textContent = lp + " / " + pages; $("#lPrev").disabled = lp <= 1; $("#lNext").disabled = lp >= pages; $("#lPg").max = pages; $("#lPg").placeholder = "1–" + pages;
   if (!list.length) { g.textContent = t("none"); return; }
   list.forEach(b => {
     const c = document.createElement("div"); c.className = "card" + (b.id === bid ? " on" : ""); c.tabIndex = 0;
@@ -455,7 +481,7 @@ function renderLib(){
     
     const h = document.createElement("h3"); h.textContent = b.title;
     const a = document.createElement("small"); a.textContent = b.author || "";
-    const pr = b.status === "finished" ? 100 : b.total ? Math.min(100, Math.round(((b.ch || 0) + (b.pos || 0)) / b.total * 100)) : 0;
+    const pr = b.cc ? pctOf(b) : b.status === "finished" ? 100 : 0;
     const bar = document.createElement("div"); bar.className = "bar"; bar.innerHTML = "<i style=\"width:" + pr + "%\"></i>";
     const row = document.createElement("div"); row.className = "row";
     const sel = document.createElement("select"); ["reading", "finished", "unread"].forEach(k => sel.add(new Option(t(k), k))); sel.value = b.status;
@@ -520,6 +546,7 @@ function coverNode(b){
 /* EPUB has no fixed pages: estimate them from text length */
 function pageAt(b, ch, pos){ if (!b.cc) return 0; let o = 0; for (let i = 0; i < ch; i++) o += b.cc[i] || 0; o += (pos || 0) * (b.cc[ch] || 0); return Math.floor(o / cppOf(b)) + 1; }
 const totalPg = b => b.cc ? Math.max(1, Math.ceil(b.cc.reduce((a, x) => a + x, 0) / cppOf(b))) : 0;
+const pctOf = b => { const tp = totalPg(b); if (!tp) return 0; const done = b.status === "finished" ? tp : (b.status === "unread" && !b.ch && !b.pos) ? 0 : pageAt(b, b.ch || 0, b.pos || 0); return Math.min(100, Math.round(done / tp * 100)); };
 async function measure(zip){
   try {
     const cn = xml(await zip.file("META-INF/container.xml").async("string"));
@@ -582,7 +609,7 @@ function showDetail(id){
   (b.bm || []).forEach((m, i) => { const r = el("div"); const o = el("button", "", "p." + pageAt(b, m.ch, m.pos) + (m.label ? " · " + m.label : "")); o.onclick = () => go({ch: m.ch, pos: m.pos}); const x = el("button", "rm", "×"); x.title = t("remove"); x.onclick = () => { b.bm.splice(i, 1); save(); showDetail(id); }; r.append(o, x); bl.append(r); });
   if (!(b.bm || []).length) bl.append(el("small", "", t("nobm")));
   const info = el("div", "dinfo");
-  info.append(el("h2", "", b.title), el("small", "", b.author || ""), fld(t("status"), sel), fld(t("pread") + ": " + (tp ? done + " / " + tp : "—"), bar));
+  info.append(el("h2", "", b.title), el("small", "", b.author || ""), fld(t("status"), sel), fld(t("pread") + ": " + (tp ? done + " / " + tp + " (" + pctOf(b) + "%)" : "—"), bar));
   if (tp) info.append(el("small", "", t("pgnote")));
   info.append(fld(t("series"), inp("series")), fld(t("genre"), inp("genre")), fld(t("bms"), bl), fld(t("notes"), ta));
   const w = el("div", "dwrap"); w.append(cv, info); d.append(back, w); $("#reader").scrollTop = 0;
@@ -598,6 +625,38 @@ const goHome = () => { if (book) $("#libBtn").click(); else if (inDetail) closeD
 $("#logo").onclick = goHome;
 $("#logo").onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); goHome(); } };
 $("#bookTitle").onclick = () => { if (!book) goHome(); };
+$("#reader").addEventListener("scroll", () => { const r = $("#reader"), rr = rec(); if (!book || !rr) return; const m = r.scrollHeight - r.clientHeight, tp = totalPg(rr); if (tp) $("#pos").textContent = Math.min(tp, pageAt(rr, cur, m > 0 ? r.scrollTop / m : 1)) + " / " + tp; });
+document.addEventListener("click", e => { const b = e.target.closest("button, .card, #toc a"); if (!b) return; b.classList.add("hit"); setTimeout(() => b.classList.remove("hit"), 700); }, true);
+function jumpTo(kind){
+  const rr = rec(); if (!book || !rr) return;
+  const n = parseFloat($(kind === "pg" ? "#jPg" : "#jPc").value); if (isNaN(n)) return;
+  const tp = totalPg(rr); let ch = 0, pos = 0;
+  if (rr.cc && tp) {
+    const total = rr.cc.reduce((a, x) => a + x, 0), cpp = cppOf(rr);
+    const target = Math.max(0, Math.min(total - 1, kind === "pg" ? (Math.max(1, Math.min(tp, n)) - 1) * cpp : Math.max(0, Math.min(100, n)) / 100 * total));
+    let cum = 0;
+    for (let i = 0; i < rr.cc.length; i++) { if (target < cum + rr.cc[i] || i === rr.cc.length - 1) { ch = i; pos = rr.cc[i] ? (target - cum) / rr.cc[i] : 0; break; } cum += rr.cc[i]; }
+  } else if (kind === "pc") { const len = book.spine.length; ch = Math.min(len - 1, Math.floor(Math.max(0, Math.min(100, n)) / 100 * len)); }
+  else return;
+  show(Math.min(ch, book.spine.length - 1), "", Math.max(0, Math.min(1, pos)));
+  $("#jump").classList.add("hide");
+}
+$("#pos").onclick = () => { const j = $("#jump"); j.classList.toggle("hide"); if (!j.classList.contains("hide")) { const rr = rec(), tp = rr ? totalPg(rr) : 0; $("#jPg").disabled = !tp; $("#jPg").max = tp; $("#jPg").placeholder = tp ? "1–" + tp : ""; (tp ? $("#jPg") : $("#jPc")).focus(); } };
+$("#pos").onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#pos").click(); } };
+$("#jPgGo").onclick = () => jumpTo("pg");
+$("#jPcGo").onclick = () => jumpTo("pc");
+["jPg", "jPc"].forEach(id => { $("#" + id).onkeydown = e => { if (e.key === "Enter") jumpTo(id === "jPg" ? "pg" : "pc"); }; });
+let lp = 1; const LPAGE = 12;
+$("#lPrev").onclick = () => { lp--; renderLib(); };
+$("#lNext").onclick = () => { lp++; renderLib(); };
+$("#lPos").onclick = () => { const j = $("#lJump"); j.classList.toggle("hide"); if (!j.classList.contains("hide")) $("#lPg").focus(); };
+$("#lPos").onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#lPos").click(); } };
+const lGo = () => { const n = parseInt($("#lPg").value, 10); if (isNaN(n)) return; lp = n; $("#lPg").value = ""; $("#lJump").classList.add("hide"); renderLib(); };
+$("#lGo").onclick = lGo;
+$("#lPg").onkeydown = e => { if (e.key === "Enter") lGo(); };
+const sJump = () => { if (!book || $("#sPc").value === "") return; $("#jPc").value = $("#sPc").value; jumpTo("pc"); $("#sPc").value = ""; $("#settings").classList.add("hide"); };
+$("#sGo").onclick = sJump;
+$("#sPc").onkeydown = e => { if (e.key === "Enter") sJump(); };
 $("#logo").innerHTML = SITE.logo; $("#logoBig").innerHTML = SITE.logo;
 { const ic = document.createElement("link"); ic.rel = "icon"; ic.href = "data:image/svg+xml," + encodeURIComponent(SITE.logo.replace(/currentColor/g, "#1d6a63")); document.head.append(ic); }
 applySettings(); applyLang();
